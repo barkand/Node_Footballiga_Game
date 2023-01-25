@@ -24,25 +24,27 @@ class GameController {
 
   saveTeam = async (req: any, res: any) => {
     let { wallet, token } = req.cookies;
-    let { teamName, teams } = req.body;
+    let { params } = req.body;
+    let { name, teams } = params;
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
     if (_verify.code !== 200) res.status(_verify.code).send(_verify);
 
-    let _result: any = await SetTeam(wallet, teamName, teams.slice(0, 5));
+    let _result: any = await SetTeam(wallet, name, teams.slice(0, 5));
     res.status(_result.code).send(_result);
   };
 
   checkTeamName = async (req: any, res: any) => {
     let { wallet, token } = req.cookies;
-    let { teamName } = req.body;
+    let { params } = req.body;
+    let { name } = params;
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
     if (_verify.code !== 200) res.status(_verify.code).send(_verify);
 
-    let _result = await CheckTeamName(wallet, teamName);
+    let _result = await CheckTeamName(wallet, name);
     res.status(_result.code).send(_result);
   };
 
