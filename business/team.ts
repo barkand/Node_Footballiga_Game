@@ -21,7 +21,7 @@ const GetTeamCard = async (lang: string, user: string) => {
     for (let i = 0; i < _cards.length; i++) {
       cards.push({
         id: _cards[i].id,
-        name: lang === "en" ? _cards[i].nameEn : _cards[i].name,
+        name: lang === "en" ? _cards[i].nameEn : _cards[i].nameFa,
         image: `${_cards[i].cardEn?.toLowerCase()}/${_cards[i].code}.png`,
       });
     }
@@ -31,7 +31,7 @@ const GetTeamCard = async (lang: string, user: string) => {
     for (let i = 0; i < _teams.length; i++) {
       teams.push({
         id: _teams[i].id,
-        name: lang === "en" ? _teams[i].nameEn : _teams[i].name,
+        name: lang === "en" ? _teams[i].nameEn : _teams[i].nameFa,
         image: `${_teams[i].cardEn?.toLowerCase()}/${_teams[i].code}.png`,
       });
     }
