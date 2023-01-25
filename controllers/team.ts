@@ -16,7 +16,10 @@ class GameController {
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
-    if (_verify.code !== 200) res.status(_verify.code).send(_verify);
+    if (_verify.code !== 200) {
+      res.status(_verify.code).send(_verify);
+      return;
+    }
 
     let _result: any = await GetTeamCard(lang, wallet);
     res.status(_result.code).send(_result);
@@ -29,7 +32,10 @@ class GameController {
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
-    if (_verify.code !== 200) res.status(_verify.code).send(_verify);
+    if (_verify.code !== 200) {
+      res.status(_verify.code).send(_verify);
+      return;
+    }
 
     let _result: any = await SetTeam(wallet, name, teams.slice(0, 5));
     res.status(_result.code).send(_result);
@@ -42,7 +48,10 @@ class GameController {
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
-    if (_verify.code !== 200) res.status(_verify.code).send(_verify);
+    if (_verify.code !== 200) {
+      res.status(_verify.code).send(_verify);
+      return;
+    }
 
     let _result = await CheckTeamName(wallet, name);
     res.status(_result.code).send(_result);
@@ -53,7 +62,10 @@ class GameController {
     const image = req.files.file;
 
     let _verify = await verifyToken(token);
-    if (_verify.code !== 200) res.status(_verify.code).send(_verify);
+    if (_verify.code !== 200) {
+      res.status(_verify.code).send(_verify);
+      return;
+    }
 
     let _result: any = await uploadImage(image, "teams", wallet);
     res.status(_result.code).send(_result);
@@ -64,7 +76,10 @@ class GameController {
     if (wallet === undefined) wallet = "";
 
     let _verify = await verifyToken(token);
-    if (_verify.code !== 200) res.status(_verify.code).send(_verify);
+    if (_verify.code !== 200) {
+      res.status(_verify.code).send(_verify);
+      return;
+    }
 
     let _result: any = await GetTeamName(wallet);
     res.status(_result.code).send(_result);
