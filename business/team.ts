@@ -6,10 +6,11 @@ import { Buys, Products } from "../../market/models";
 
 const path = "Game>Business>team>";
 
-const GetTeamCard = async (lang: string, user: string) => {
+const GetTeamCard = async (lang: string, user_id: string) => {
   try {
-    let _players: any = (await Teams.findOne({ user_id: user }))?.players ?? [];
-    let _buys: any = (await Buys.find({ user_id: user })).map(
+    let _players: any =
+      (await Teams.findOne({ user_id: user_id }))?.players ?? [];
+    let _buys: any = (await Buys.find({ user_id: user_id })).map(
       (x: any) => x.product_id
     );
 
@@ -43,15 +44,15 @@ const GetTeamCard = async (lang: string, user: string) => {
   }
 };
 
-const SetTeam = async (wallet: string, teamName: string, teams: any) => {
+const SetTeam = async (user_id: string, teamName: string, teams: any) => {
   try {
-    let _team = await Teams.findOne({ user_id: wallet });
-    let _checkName = await CheckTeamName(wallet, teamName);
+    let _team = await Teams.findOne({ user_id: user_id });
+    let _checkName = await CheckTeamName(user_id, teamName);
     if (_checkName.code !== 200) return _checkName;
 
     if (!_team) {
       _team = await Teams.create({
-        user_id: wallet,
+        user_id: user_id,
         name: teamName,
         code: 1,
         players: teams,
@@ -69,11 +70,11 @@ const SetTeam = async (wallet: string, teamName: string, teams: any) => {
   }
 };
 
-const CheckTeamName = async (wallet: string, teamName: string) => {
+const CheckTeamName = async (user_id: string, teamName: string) => {
   try {
     let team: any = await Teams.findOne({
       name: teamName,
-      user_id: { $ne: wallet },
+      user_id: { $ne: user_id },
     });
 
     if (team) {
@@ -87,11 +88,10 @@ const CheckTeamName = async (wallet: string, teamName: string) => {
   }
 };
 
-const GetTeamName = async (wallet: string) => {
+const GetTeamName = async (user_id: string) => {
   try {
-    let teamName = "";
-    let team: any = await Teams.findOne({ user_id: wallet });
-    if (team) teamName = team.name;
+    let team: any = await Teams.findOne({ user_id: user_id });
+    let teamName = team ? team.name : "";
 
     return { ...response.success, data: teamName };
   } catch (e: any) {
