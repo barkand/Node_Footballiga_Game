@@ -93,7 +93,7 @@ const GetTeamName = async (user_id: string) => {
     let team: any = await Teams.findOne({ user_id: user_id });
     let teamName = team ? team.name : "";
 
-    return { ...response.success, data: teamName };
+    return { ...response.success, data: { teamName: teamName } };
   } catch (e: any) {
     logger.error(`${path}GetTeamName: ${e}`);
     return response.error;
