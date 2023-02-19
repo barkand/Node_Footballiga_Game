@@ -10,12 +10,11 @@ const GetTeamCard = async (lang: string, user_id: string) => {
   try {
     let _players: any =
       (await Teams.findOne({ user_id: user_id }))?.players ?? [];
-    let _buys: any = (await Buys.find({ user_id: user_id })).map(
-      (x: any) => x.product_id
-    );
+    let _buys: any = await Buys.find({ user_id: user_id, soled: false });
+    let _buys_ids: any = _buys.map((x: any) => x.product_id);
 
     let _cards = await Products.find({
-      id: { $in: _buys.filter((n: any) => !_players.includes(n)) },
+      id: { $in: _buys_ids.filter((n: any) => !_players.includes(n)) },
     });
 
     let cards: any = [];
@@ -24,6 +23,8 @@ const GetTeamCard = async (lang: string, user_id: string) => {
         id: _cards[i].id,
         name: lang === "en" ? _cards[i].nameEn : _cards[i].nameFa,
         image: `${_cards[i].cardEn?.toLowerCase()}/${_cards[i].code}.png`,
+        for_sale: _buys.find((n: any) => n.product_id === _cards[i].id)
+          .for_sale,
       });
     }
 
@@ -34,6 +35,8 @@ const GetTeamCard = async (lang: string, user_id: string) => {
         id: _teams[i].id,
         name: lang === "en" ? _teams[i].nameEn : _teams[i].nameFa,
         image: `${_teams[i].cardEn?.toLowerCase()}/${_teams[i].code}.png`,
+        for_sale: _buys.find((n: any) => n.product_id === _teams[i].id)
+          .for_sale,
       });
     }
 
