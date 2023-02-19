@@ -19,12 +19,17 @@ const GetTeamCard = async (lang: string, user_id: string) => {
 
     let cards: any = [];
     for (let i = 0; i < _cards.length; i++) {
+      let forSale: boolean = _buys.find(
+        (n: any) => n.product_id === _cards[i].id
+      ).for_sale;
+
       cards.push({
         id: _cards[i].id,
-        name: lang === "en" ? _cards[i].nameEn : _cards[i].nameFa,
+        name:
+          (lang === "en" ? _cards[i].nameEn : _cards[i].nameFa) +
+          (forSale === true ? " *" : ""),
         image: `${_cards[i].cardEn?.toLowerCase()}/${_cards[i].code}.png`,
-        for_sale: _buys.find((n: any) => n.product_id === _cards[i].id)
-          .for_sale,
+        for_sale: forSale,
       });
     }
 
@@ -35,8 +40,7 @@ const GetTeamCard = async (lang: string, user_id: string) => {
         id: _teams[i].id,
         name: lang === "en" ? _teams[i].nameEn : _teams[i].nameFa,
         image: `${_teams[i].cardEn?.toLowerCase()}/${_teams[i].code}.png`,
-        for_sale: _buys.find((n: any) => n.product_id === _teams[i].id)
-          .for_sale,
+        for_sale: false,
       });
     }
 
